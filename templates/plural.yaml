@@ -1,0 +1,3 @@
+elastic_host: <%= @elastic_host %>
+elastic_port: <%= @elastic_port %>
+environment: <%= @environment %>
