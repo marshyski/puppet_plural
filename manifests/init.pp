@@ -5,8 +5,13 @@ class puppet_plural (
   $environment  = 'dev',
   ) {
 
+
+  #puppet module install stahnma-epel
+  include epel
+  #puppet module install stankevich-python
+  include python
   #puppet module install ajcrowe-supervisord
-  include ::supervisord
+  include supervisord
 
   yumrepo { 'plural-beta':
     ensure   => 'present',
@@ -37,7 +42,6 @@ class puppet_plural (
     command     => '/opt/plural/bin/plural',
     user        => 'root',
     priority    => '1',
-    autostart   => 'yes',
     autorestart => 'true',
     require     => File['/opt/plural/conf/plural.yaml'],
   }
