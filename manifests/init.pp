@@ -1,6 +1,6 @@
 class puppet_plural (
   $repo_url     = 'http://yum.marshyski.com',
-  $elastic_host = 'plural.marshyski.com',
+  $elastic_host = '104.236.20.133',
   $elastic_port = '9200',
   $environment  = 'dev',
   ) {
@@ -21,7 +21,7 @@ class puppet_plural (
     require => Yumrepo['plural-beta'],
   }
 
-  file { /opt/plural/bin/plural:
+  file { '/opt/plural/bin/plural':
     ensure  => present,
     mode    => '0755',
     require => Package['plural'],
