@@ -5,9 +5,20 @@ class puppet_plural (
   $environment  = 'dev',
   ) {
 
+  #puppet module install ajcrowe-supervisord
+  include ::supervisord
+
+  yumrepo { 'plural-beta':
+    ensure   => 'present',
+    baseurl  => $repo_url,
+    descr    => 'Plural Beta',
+    enabled  => '1',
+    gpgcheck => '0',
+  }
+
   package { 'plural':
     ensure  => latest,
-    require => File['/etc/yum.repos.d/plural.repo'],
+    require => Yumrepo['plural-beta'],
   }
 
   file { /opt/plural/bin/plural:
@@ -16,14 +27,18 @@ class puppet_plural (
     require => Package['plural'],
   }
 
-  file { '/etc/yum.repos.d/plural.repo':
-    ensure  => present,
-    content => template('puppet_plural/plural.repo'),
-  }
-
   file { '/opt/plural/conf/plural.yaml':
     ensure  => present,
     content => template('puppet_plural/plural.yaml'),
     require => Package['plural'],
+  }
+
+  supervisord::program { 'plural':
+    command     => '/opt/plural/bin/plural',
+    user        => 'root',
+    priority    => '1',
+    autostart   => 'yes',
+    autorestart => 'true',
+    require     => File['/opt/plural/conf/plural.yaml'],
   }
 }
