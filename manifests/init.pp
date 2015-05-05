@@ -13,27 +13,24 @@ class puppet_plural (
     gpgcheck => '0',
   }
 
-  yumrepo { 'epel':
-    ensure         => 'present',
-    descr          => 'Extra Packages for Enterprise Linux 6 - $basearch',
-    enabled        => '1',
-    failovermethod => 'priority',
-    gpgcheck       => '0',
-    gpgkey         => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-6',
-    mirrorlist     => 'http://mirrors.fedoraproject.org/mirrorlist?repo=epel-6&arch=$basearch',
+  package { 'plural':
+      ensure  => latest,
+      require => Yumrepo['plural-beta'],
   }
 
-  package {
-    [
-    'supervisor',
-    'plural',
-    ]:
-      ensure  => latest,
-      require => [Yumrepo['epel'], Yumrepo['plural-beta']],
+  service { 'plural':
+    ensure     => running,
+    enable     => true,
+    hasrestart => true,
+    hasstatus  => true,
+    subscribe  => File['/opt/plural/conf/plural.yaml'],
+    require    => File['/opt/plural/conf/plural.yaml'],
   }
 
   file { '/opt/plural/bin/plural':
     ensure  => present,
+    owner   => root,
+    group   => root,
     mode    => '0755',
     require => Package['plural'],
   }
@@ -42,21 +39,6 @@ class puppet_plural (
     ensure  => present,
     content => template('puppet_plural/plural.yaml'),
     require => Package['plural'],
-  }
-
-  file { '/etc/supervisord.conf':
-    ensure  => present,
-    content => template('puppet_plural/supervisord.conf'),
-    require => Package['supervisor'],
-  }
-
-  service { 'supervisord':
-    ensure     => running,
-    enable     => true,
-    hasrestart => true,
-    hasstatus  => true,
-    subscribe  => File['/etc/supervisord.conf'],
-    require    => [File['/opt/plural/conf/plural.yaml'], File['/etc/supervisord.conf']],
   }
 
 }
