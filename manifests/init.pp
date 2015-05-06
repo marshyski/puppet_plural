@@ -23,8 +23,17 @@ class puppet_plural (
     enable     => true,
     hasrestart => true,
     hasstatus  => true,
+    status     => '/sbin/service plural status | grep "is running"',
     subscribe  => File['/opt/plural/conf/plural.yaml'],
-    require    => File['/opt/plural/conf/plural.yaml'],
+    require    => [File['/opt/plural/conf/plural.yaml'], File['/etc/init.d/plural']],
+  }
+
+  file { '/etc/init.d/plural':
+    ensure  => present,
+    owner   => root,
+    group   => root,
+    mode    => '0755',
+    require => Package['plural'],
   }
 
   file { '/opt/plural/bin/plural':
