@@ -1,3 +1,6 @@
 elastic_host: <%= @elastic_host %>
 elastic_port: <%= @elastic_port %>
 environment: <%= @environment %>
+interval: <%= @interval %>
+username: <%= @username %>
+password: <%= @password %>

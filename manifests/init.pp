@@ -3,6 +3,9 @@ class puppet_plural (
   $elastic_host = '104.236.20.133',
   $elastic_port = '9200',
   $environment  = 'dev',
+  $interval     = '300',
+  $username     = undef,
+  $password     = undef,
   ) {
 
   yumrepo { 'plural-beta':
