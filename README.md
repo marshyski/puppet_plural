@@ -1,11 +1,20 @@
 # puppet_plural
-Puppet manifest for Plural https://github.com/marshyski/plural
+Puppet module for Plural - Linux Inventory https://github.com/marshyski/plural
 
-**Install Dependencies:**
+**No Install Dependencies**
 
-     puppet module install stahnma-epel
-     puppet module install stankevich-python
-     puppet module install ajcrowe-supervisord
-     
+
+**Parameters / Variables:**
+
+     $repo_url     = 'http://yum.marshyski.com',
+     $elastic_host = '104.236.20.133',
+     $elastic_port = '9200',
+     $environment  = 'dev',
+     $interval     = '300',
+     $username     = undef,
+     $password     = undef,
+     $package_ver  = 'latest',
+
 **Tested:**
 - RHEL / CentOS 6
+- Puppet Enterprise 3.7/3.8
