@@ -6,6 +6,7 @@ class puppet_plural (
   $interval     = '300',
   $username     = undef,
   $password     = undef,
+  $package_ver  = 'latest',
   ) {
 
   yumrepo { 'plural-beta':
@@ -17,7 +18,7 @@ class puppet_plural (
   }
 
   package { 'plural':
-      ensure  => latest,
+      ensure  => $package_ver,
       require => Yumrepo['plural-beta'],
   }
 
