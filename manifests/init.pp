@@ -1,7 +1,7 @@
 class puppet_plural (
-  $repo_url     = 'http://yum.marshyski.com',
-  $elastic_host = '104.236.20.133',
-  $elastic_port = '9200',
+  $repo_url     = 'http://yum.appitize.io',
+  $elastic_host = 'es.appitize.io',
+  $elastic_port = '80',
   $environment  = 'dev',
   $interval     = '300',
   $username     = undef,
